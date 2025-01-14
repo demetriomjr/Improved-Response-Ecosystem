@@ -1,0 +1,11 @@
+@CommandService_HostAddress = http://localhost:5228
+
+GET {{CommandService_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{CommandService_HostAddress}}/todos/1
+Accept: application/json
+
+###
