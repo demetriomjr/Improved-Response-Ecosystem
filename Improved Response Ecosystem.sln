@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{749351EC-FD4B-4946-B1A9-4DE36F52F238}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{534E43FD-CCB9-4B44-B02C-0A6808F5D1DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSyncService", "EventSyncService\EventSyncService.csproj", "{EF6F7018-CBBB-424E-BCD5-680091699768}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{749351EC-FD4B-4946-B1A9-4DE36F52F238}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{749351EC-FD4B-4946-B1A9-4DE36F52F238}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{749351EC-FD4B-4946-B1A9-4DE36F52F238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{534E43FD-CCB9-4B44-B02C-0A6808F5D1DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{534E43FD-CCB9-4B44-B02C-0A6808F5D1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{534E43FD-CCB9-4B44-B02C-0A6808F5D1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{534E43FD-CCB9-4B44-B02C-0A6808F5D1DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF6F7018-CBBB-424E-BCD5-680091699768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF6F7018-CBBB-424E-BCD5-680091699768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF6F7018-CBBB-424E-BCD5-680091699768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF6F7018-CBBB-424E-BCD5-680091699768}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
