@@ -1,12 +1,26 @@
-﻿namespace Application.Commands.People
+﻿using Application.Interfaces;
+using Models.People;
+
+namespace Application.API.People
 {
-    public class PeopleCommandsController
+    public class PeopleController
     {
         private readonly IPersonRepository _personRepository;
 
-        public PeopleCommandsController(IPersonRepository personRepository)
+        public PeopleController(IPersonRepository personRepository)
         {
             _personRepository = personRepository;
+        }
+
+        public async Task<List<Person>> GetAsync()
+        {
+            return await _personRepository.GetAll();
+        }
+
+        public async Task<Person?> GetAsync(uint id)
+        {
+            var result = await _personRepository.GetById(id);
+            return result;
         }
 
         public async Task<Person?> Post(Person? item = default)
@@ -23,7 +37,7 @@
             if (item == null)
                 return false;
 
-            Person? person = await _personRepository.GetById(id);
+            var person = await _personRepository.GetById(id);
             if (person == null)
                 return false;
 

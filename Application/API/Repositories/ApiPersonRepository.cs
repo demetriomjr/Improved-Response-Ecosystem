@@ -1,8 +1,9 @@
-﻿using Models.People;
+﻿using Application.Interfaces;
+using Models.People;
 
-namespace Application.Repositories
+namespace Application.API.Repositories
 {
-    public class PersonRepository : IPersonRepository
+    public class ApiPersonRepository : IPersonRepository
     {
 
         //TO BE REPLACED WITH REAL LOGIC
@@ -13,16 +14,16 @@ namespace Application.Repositories
             return Task.FromResult(_people);
         }
 
-        public Task<Person> GetById(uint id)
+        public Task<Person?> GetById(uint id)
         {
-            var person = _people.FirstOrDefault(p => p.Id == id);
-            return Task.FromResult(person!);
+            var result = _people.FirstOrDefault(p => p.Id == id);
+            return Task.FromResult(result);
         }
 
-        public Task<bool> CreatePerson(Person person)
+        public Task<Person?> CreatePerson(Person? person)
         {
-            _people.Add(person);
-            return Task.FromResult(true);
+            _people.Add(person ??= new());
+            return Task.FromResult<Person?>(person);
         }
 
         public Task<bool> DeletePerson(uint id)
@@ -36,7 +37,7 @@ namespace Application.Repositories
             else return Task.FromResult(false);
         }
 
-        public Task<bool> UpdatePerson(uint id, Person person)
+        public Task<bool> UpdatePerson(uint id, Person? person)
         {
             var existingPerson = _people.FirstOrDefault(p => p.Id == id);
 

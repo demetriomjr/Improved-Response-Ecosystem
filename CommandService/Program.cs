@@ -1,11 +1,14 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Mvc;
+using Application;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
-   
+
 });
+builder.Services.AddInternalRepositories(); // Certifique-se de que este método está definido em algum lugar no seu projeto
+
 var app = builder.Build();
 
 var group = app.MapGroup("/people");
