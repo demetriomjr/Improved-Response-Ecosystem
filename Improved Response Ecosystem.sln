@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{749351EC-FD4B-4946-B1A9-4DE36F52F238}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{534E43FD-CCB9-4B44-B02C-0A6808F5D1DC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{88EB93F0-033A-4BAA-83F6-BF483420393E} = {88EB93F0-033A-4BAA-83F6-BF483420393E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSyncService", "EventSyncService\EventSyncService.csproj", "{EF6F7018-CBBB-424E-BCD5-680091699768}"
 EndProject

@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
+    <Folder Include="Commands\Infrastructure\" />
+    <Folder Include="Commands\API\" />
+    <Folder Include="Queries\Infrastructure\" />
+    <Folder Include="Queries\API\" />
   </ItemGroup>
 
 </Project>
