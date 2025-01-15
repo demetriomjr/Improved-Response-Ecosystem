@@ -1,0 +1,11 @@
+@APIGatewayService_HostAddress = http://localhost:5286
+
+GET {{APIGatewayService_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{APIGatewayService_HostAddress}}/todos/1
+Accept: application/json
+
+###
