@@ -1,17 +1,22 @@
-﻿using Models.People;
-
-namespace Application.Queries.People
+﻿namespace Application.Queries.People
 {
     public class PeopleQueriesController
     {
-        public List<Person> Get()
+        private readonly IPersonRepository _personRepository;
+
+        public PeopleQueriesController(IPersonRepository personRepository)
         {
-            return [];
+            _personRepository = personRepository;
         }
 
-        public Person Get(uint id)
+        public async Task<List<Person>> GetAsync()
         {
-            return new();
+            return await _personRepository.GetAll();
+        }
+
+        public async Task<Person> GetAsync(uint id)
+        {
+            return await _personRepository.GetById(id);
         }
     }
 }

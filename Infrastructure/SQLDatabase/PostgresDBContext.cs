@@ -11,8 +11,11 @@ namespace Infrastructure.SQLDatabase
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var et in modelBuilder.Model.GetEntityTypes().Where(x => x.BaseType!.Name.Equals(nameof(SQLPersistentModel))))
+            {
                 modelBuilder.Entity(et.Name).HasIndex("Id");
-            
+                //modelBuilder.Entity(et.Name).Property("Id").HasCheckConstraint("CK_Id_NonNegative", "[Id] >= 0");
+            }
+
             base.OnModelCreating(modelBuilder);
         }
     }
