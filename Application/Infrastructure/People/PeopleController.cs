@@ -5,9 +5,9 @@ namespace Application.Infrastructure.People
 {
     public class PeopleController
     {
-        private readonly IPersonRepository _personRepository;
+        private readonly IDataManagementRepository _personRepository;
 
-        public PeopleController(IPersonRepository personRepository)
+        public PeopleController(IDataManagementRepository personRepository)
         {
             _personRepository = personRepository;
         }

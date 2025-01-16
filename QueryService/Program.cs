@@ -1,22 +1,21 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Mvc;
+using Application;
 
 var builder = WebApplication.CreateSlimBuilder(args);
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    
-});
-
+builder.Services.AddInternalRepositories();
 var app = builder.Build();
 
 var group = app.MapGroup("/people");
-group.MapGet("/", (HttpContext context) =>
+group.MapGet("/", async (HttpContext context) =>
 {
-
+    var result = await ApplicationController.ApiController.People.GetAsync();
+    return Results.Ok(result);
 });
-group.MapGet("/:id", (HttpContext context, [FromRoute] uint id) =>
+group.MapGet("/:id", async (HttpContext context, [FromRoute] uint id) =>
 {
-
+    var result = await ApplicationController.ApiController.People.GetAsync(id);
+    return result is null ? Results.NotFound() : Results.Ok(result);
 });
 
 var env = Env.Load("../../SolutionItems/.env");

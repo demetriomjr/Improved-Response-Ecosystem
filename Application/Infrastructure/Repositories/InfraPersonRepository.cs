@@ -3,7 +3,7 @@ using Models.People;
 
 namespace Application.Infrastructure.Repositories
 {
-    public class InfraPersonRepository : IPersonRepository
+    public class InfraPersonRepository : IDataManagementRepository
     {
         //TO BE REPLACED WITH REAL LOGIC
         private List<Person> _peopleList = new List<Person>();

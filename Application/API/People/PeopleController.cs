@@ -5,21 +5,21 @@ namespace Application.API.People
 {
     public class PeopleController
     {
-        private readonly IPersonRepository _personRepository;
+        private readonly IDataManagementRepository _personRepository;
 
-        public PeopleController(IPersonRepository personRepository)
+        public PeopleController(IDataManagementRepository personRepository)
         {
             _personRepository = personRepository;
         }
 
         public async Task<List<Person>> GetAsync()
         {
-            return await _personRepository.GetAll();
+            return await _personRepository.GetAllAsync();
         }
 
         public async Task<Person?> GetAsync(uint id)
         {
-            var result = await _personRepository.GetById(id);
+            var result = await _personRepository.GetByIdAsync(id);
             return result;
         }
 
@@ -28,7 +28,7 @@ namespace Application.API.People
             if (item == null)
                 return await Task.FromResult<Person?>(null);
 
-            var createdPerson = await _personRepository.CreatePerson(item);
+            var createdPerson = await _personRepository.CreateAsync(item);
             return createdPerson != null ? createdPerson : null;
         }
 
@@ -37,16 +37,16 @@ namespace Application.API.People
             if (item == null)
                 return false;
 
-            var person = await _personRepository.GetById(id);
+            var person = await _personRepository.GetByIdAsync(id);
             if (person == null)
                 return false;
 
-            return await _personRepository.UpdatePerson(id, item);
+            return await _personRepository.UpdateAsync(id, item);
         }
 
         public async Task<bool> Delete(uint id)
         {
-            return await _personRepository.DeletePerson(id);
+            return await _personRepository.DeleteAsync(id);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace Application
         {
             // Adicionando o using necessário dentro do método
             {
-                services.AddScoped<IPersonRepository, ApiPersonRepository>();
-                services.AddScoped<IPersonRepository, InfraPersonRepository>();
+                services.AddScoped<IDataManagementRepository, ApiPersonRepository>();
+                services.AddScoped<IDataManagementRepository, InfraPersonRepository>();
             }
 
             return services;

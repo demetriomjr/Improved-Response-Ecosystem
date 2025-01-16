@@ -3,7 +3,7 @@ using Models.People;
 
 namespace Application.API.Repositories
 {
-    public class ApiPersonRepository : IPersonRepository
+    public class ApiPersonRepository : IDataManagementRepository
     {
 
         //TO BE REPLACED WITH REAL LOGIC

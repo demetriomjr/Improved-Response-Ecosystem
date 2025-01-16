@@ -7,7 +7,7 @@ namespace Application.API
 {
     public class ApiController
     {
-        private static readonly IPersonRepository _personRepository = new ApiPersonRepository();
+        private static readonly IDataManagementRepository _personRepository = new ApiPersonRepository();
 
         public PeopleController People = new(_personRepository);
     }
