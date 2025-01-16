@@ -8,24 +8,24 @@ namespace Application.Infrastructure.Repositories
         //TO BE REPLACED WITH REAL LOGIC
         private List<Person> _peopleList = new List<Person>();
 
-        public Task<List<Person>> GetAll()
+        public Task<List<Person>> GetAllAsync()
         {
             return Task.FromResult(_peopleList);
         }
 
-        public Task<Person?> GetById(uint id)
+        public Task<Person?> GetByIdAsync(uint id)
         {
             var result = _peopleList.FirstOrDefault(p => p.Id == id);
             return Task.FromResult(result);
         }
 
-        public Task<Person?> CreatePerson(Person? person)
+        public Task<Person?> CreateAsync(Person? person)
         {
             _peopleList.Add(person ??= new());
             return Task.FromResult<Person?>(person);
         }
 
-        public Task<bool> DeletePerson(uint id)
+        public Task<bool> DeleteAsync(uint id)
         {
             var person = _peopleList.FirstOrDefault(p => p.Id == id);
             if (person != null)
@@ -36,7 +36,7 @@ namespace Application.Infrastructure.Repositories
             else return Task.FromResult(false);
         }
 
-        public Task<bool> UpdatePerson(uint id, Person? person)
+        public Task<bool> UpdateAsync(uint id, Person? person)
         {
             var existingPerson = _peopleList.FirstOrDefault(p => p.Id == id);
 

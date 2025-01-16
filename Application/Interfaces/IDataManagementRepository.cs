@@ -1,13 +1,11 @@
-﻿using Models.People;
-
-namespace Application.Interfaces
+﻿namespace Application.Interfaces
 {
-    public interface IDataManagementRepository
+    public interface IDataManagementRepository<T>
     {
-        Task<List<Person>> GetAllAsync();
-        Task<Person?> GetByIdAsync(uint id);
-        Task<Person?> CreateAsync(Person? person);
-        Task<bool> UpdateAsync(uint id, Person? person);
-        Task<bool> DeleteAsync(uint id);
+        Task<List<T>> GetAllAsync(Func<T?, bool> predicate, CancellationToken ct);
+        Task<T?> GetByIdAsync(uint id, CancellationToken ct);
+        Task<T?> CreateAsync(T? person, CancellationToken ct);
+        Task<bool> UpdateAsync(uint id, T? person, CancellationToken ct);
+        Task<bool> DeleteAsync(uint id, CancellationToken ct);
     }
 }

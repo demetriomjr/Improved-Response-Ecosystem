@@ -1,32 +1,43 @@
 ﻿using Application.Interfaces;
 using Models.People;
+using RabbitHelper;
+using System.Text.Json;
 
 namespace Application.API.Repositories
 {
-    public class ApiPersonRepository : IDataManagementRepository
+    public class ApiPersonRepository : IDataManagementRepository<Person>
     {
 
         //TO BE REPLACED WITH REAL LOGIC
         private List<Person> _people = new List<Person>();
 
-        public Task<List<Person>> GetAll()
-        {
-            return Task.FromResult(_people);
+        public ApiPersonRepository()
+        { 
+                RabbitHelperService.Init().Wait();
         }
 
-        public Task<Person?> GetById(uint id)
+        public async Task<List<Person>> GetAllAsync(Func<Person?, bool> predicate, CancellationToken ct)
+        {
+            var body = JsonSerializer.Serialize(predicate);
+            await RabbitHelperService.PublishOnQueueAsync<Person>(predicate, async(byte[] result) =>
+            {
+
+            });
+        }
+
+        public Task<Person?> GetByIdAsync(uint id, CancellationToken ct)
         {
             var result = _people.FirstOrDefault(p => p.Id == id);
             return Task.FromResult(result);
         }
 
-        public Task<Person?> CreatePerson(Person? person)
+        public Task<Person?> CreateAsync(Person? person, CancellationToken ct)
         {
             _people.Add(person ??= new());
             return Task.FromResult<Person?>(person);
         }
 
-        public Task<bool> DeletePerson(uint id)
+        public Task<bool> DeleteAsync(uint id, CancellationToken ct)
         {
             var person = _people.FirstOrDefault(p => p.Id == id);
             if (person != null)
@@ -37,7 +48,7 @@ namespace Application.API.Repositories
             else return Task.FromResult(false);
         }
 
-        public Task<bool> UpdatePerson(uint id, Person? person)
+        public Task<bool> UpdateAsync(uint id, Person? item, CancellationToken ct)
         {
             var existingPerson = _people.FirstOrDefault(p => p.Id == id);
 
@@ -45,7 +56,7 @@ namespace Application.API.Repositories
             {
                 foreach (var property in typeof(Person).GetProperties())
                 {
-                    var newValue = property.GetValue(person);
+                    var newValue = property.GetValue(item);
                     property.SetValue(existingPerson, newValue);
                 }
                 return Task.FromResult(true);
