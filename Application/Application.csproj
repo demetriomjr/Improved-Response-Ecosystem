@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RabbitHelper\RabbitHelper.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
