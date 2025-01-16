@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\RabbitHelper\RabbitHelper.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ var app = builder.Build();
 var group = app.MapGroup("/people");
 group.MapGet("/", async (HttpContext context) =>
 {
-    var result = await ApplicationController.ApiController.People.GetAsync();
+    var result = await ApplicationController.ApiController.People.GetAsync(x => x is not null);
     return Results.Ok(result);
 });
 group.MapGet("/:id", async (HttpContext context, [FromRoute] uint id) =>

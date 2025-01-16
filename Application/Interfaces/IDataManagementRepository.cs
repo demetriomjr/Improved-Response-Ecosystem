@@ -1,6 +1,6 @@
 ﻿namespace Application.Interfaces
 {
-    public interface IDataManagementRepository<T>
+    public interface IDataManagementRepository<T> : IDependencyRepository
     {
         Task<List<T>> GetAllAsync(Func<T, bool> predicate, CancellationToken ct);
         Task<T?> GetByIdAsync(uint id, CancellationToken ct);

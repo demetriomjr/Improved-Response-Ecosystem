@@ -9,11 +9,8 @@ namespace Application
     {
         public static IServiceCollection AddInternalRepositories(this IServiceCollection services)
         {
-            // Adicionando o using necessário dentro do método
-            {
-                services.AddScoped<IDataManagementRepository, ApiPersonRepository>();
-                services.AddScoped<IDataManagementRepository, InfraPersonRepository>();
-            }
+            services.AddScoped<IDependencyRepository, ApiPersonRepository>();
+            services.AddScoped<IDependencyRepository, InfraPersonRepository>();
 
             return services;
         }

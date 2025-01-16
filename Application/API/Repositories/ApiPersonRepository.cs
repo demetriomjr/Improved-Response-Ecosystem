@@ -7,6 +7,7 @@ namespace Application.API.Repositories
 {
     public class ApiPersonRepository : IDataManagementRepository<Person>
     {
+        private readonly List<Person> _people = [];
 
         public ApiPersonRepository()
         { 
@@ -16,13 +17,15 @@ namespace Application.API.Repositories
         public async Task<List<Person>> GetAllAsync(Func<Person, bool> predicate, CancellationToken ct)
         {
             var body = JsonSerializer.Serialize(predicate);
-            await RabbitHelperService.PublishOnQueueAsync<Person>(predicate, ct, (byte[] result) =>
+            List<Person> tResult = [];
+            await RabbitHelperService.PublishOnQueueAsync<List<Person>>(predicate, ct, async (result, returnedCt) =>
             {
                 //todo
-                return [];
+                await Task.CompletedTask;
+                tResult = result;
             });
 
-            return [];
+            return tResult;
         }
 
         public Task<Person?> GetByIdAsync(uint id, CancellationToken ct)
