@@ -5,21 +5,21 @@ namespace Application.API.People
 {
     public class PeopleController
     {
-        private readonly IDataManagementRepository _personRepository;
+        private readonly IDataManagementRepository<Person> _personRepository;
 
-        public PeopleController(IDataManagementRepository personRepository)
+        public PeopleController(IDataManagementRepository<Person> personRepository)
         {
             _personRepository = personRepository;
         }
 
-        public async Task<List<Person>> GetAsync()
+        public async Task<List<Person>> GetAsync(Func<Person, bool> predicate)
         {
-            return await _personRepository.GetAllAsync();
+            return await _personRepository.GetAllAsync(predicate, CancellationToken.None);
         }
 
         public async Task<Person?> GetAsync(uint id)
         {
-            var result = await _personRepository.GetByIdAsync(id);
+            var result = await _personRepository.GetByIdAsync(id, CancellationToken.None);
             return result;
         }
 
@@ -28,7 +28,7 @@ namespace Application.API.People
             if (item == null)
                 return await Task.FromResult<Person?>(null);
 
-            var createdPerson = await _personRepository.CreateAsync(item);
+            var createdPerson = await _personRepository.CreateAsync(item, CancellationToken.None);
             return createdPerson != null ? createdPerson : null;
         }
 
@@ -37,16 +37,16 @@ namespace Application.API.People
             if (item == null)
                 return false;
 
-            var person = await _personRepository.GetByIdAsync(id);
+            var person = await _personRepository.GetByIdAsync(id, CancellationToken.None);
             if (person == null)
                 return false;
 
-            return await _personRepository.UpdateAsync(id, item);
+            return await _personRepository.UpdateAsync(id, item, CancellationToken.None);
         }
 
         public async Task<bool> Delete(uint id)
         {
-            return await _personRepository.DeleteAsync(id);
+            return await _personRepository.DeleteAsync(id, CancellationToken.None);
         }
     }
 }

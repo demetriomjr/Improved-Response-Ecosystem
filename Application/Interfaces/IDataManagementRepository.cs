@@ -2,7 +2,7 @@
 {
     public interface IDataManagementRepository<T>
     {
-        Task<List<T>> GetAllAsync(Func<T?, bool> predicate, CancellationToken ct);
+        Task<List<T>> GetAllAsync(Func<T, bool> predicate, CancellationToken ct);
         Task<T?> GetByIdAsync(uint id, CancellationToken ct);
         Task<T?> CreateAsync(T? person, CancellationToken ct);
         Task<bool> UpdateAsync(uint id, T? person, CancellationToken ct);

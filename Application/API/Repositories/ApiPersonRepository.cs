@@ -8,21 +8,21 @@ namespace Application.API.Repositories
     public class ApiPersonRepository : IDataManagementRepository<Person>
     {
 
-        //TO BE REPLACED WITH REAL LOGIC
-        private List<Person> _people = new List<Person>();
-
         public ApiPersonRepository()
         { 
-                RabbitHelperService.Init().Wait();
+            RabbitHelperService.Init().Wait();
         }
 
-        public async Task<List<Person>> GetAllAsync(Func<Person?, bool> predicate, CancellationToken ct)
+        public async Task<List<Person>> GetAllAsync(Func<Person, bool> predicate, CancellationToken ct)
         {
             var body = JsonSerializer.Serialize(predicate);
-            await RabbitHelperService.PublishOnQueueAsync<Person>(predicate, async(byte[] result) =>
+            await RabbitHelperService.PublishOnQueueAsync<Person>(predicate, ct, (byte[] result) =>
             {
-
+                //todo
+                return [];
             });
+
+            return [];
         }
 
         public Task<Person?> GetByIdAsync(uint id, CancellationToken ct)
