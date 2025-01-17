@@ -1,55 +1,85 @@
 ﻿using Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Models.People;
+using RabbitHelper;
+using System.Diagnostics;
 
 namespace Application.Infrastructure.Repositories
 {
     public class InfraPersonRepository : IDataManagementRepository<Person>
     {
         //TO BE REPLACED WITH REAL LOGIC
-        private List<Person> _peopleList = new List<Person>();
+        private DbContext _context;
 
-        public Task<List<Person>> GetAllAsync(Func<Person, bool> predicate, CancellationToken ct)
+        public InfraPersonRepository(DbContext context)
         {
-            return Task.FromResult(_peopleList);
+            RabbitHelperService.Init().Wait();
+            _context = context;
         }
 
-        public Task<Person?> GetByIdAsync(uint id, CancellationToken ct)
+        public async Task<List<Person>> GetAllAsync(Func<Person, bool> predicate, CancellationToken ct)
         {
-            var result = _peopleList.FirstOrDefault(p => p.Id == id);
-            return Task.FromResult(result);
+            var result = await Task.Run( () => _context.Set<Person>().Where(predicate).ToList(), ct);
+            return result;
         }
 
-        public Task<Person?> CreateAsync(Person? person, CancellationToken ct)
+        public async Task<Person?> GetByIdAsync(uint id, CancellationToken ct)
         {
-            _peopleList.Add(person ??= new());
-            return Task.FromResult<Person?>(person);
+            var result = await _context.Set<Person>().FindAsync(new { id }, ct);
+            return result;
         }
 
-        public Task<bool> DeleteAsync(uint id, CancellationToken ct)
+        public async Task<Person?> CreateAsync(Person? person, CancellationToken ct)
         {
-            var person = _peopleList.FirstOrDefault(p => p.Id == id);
+            if (person is null) return null;
+
+            var result = await _context.Set<Person>().AddAsync(person, ct);
+            await _context.SaveChangesAsync(ct);
+            return result.Entity;
+        }
+
+        public async Task<bool> DeleteAsync(uint id, CancellationToken ct)
+        {
+            var person = await _context.Set<Person>().FindAsync(new { id }, ct);
             if (person != null)
             {
-                _peopleList.Remove(person);
-                return Task.FromResult(true);
+                try
+                {
+                    await Task.Run(() => _context.Set<Person>().Remove(person), ct);
+                    await _context.SaveChangesAsync(ct);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    if (Debugger.IsAttached) throw;
+                    return false;
+                }
             }
-            else return Task.FromResult(false);
+            else return false;
         }
 
-        public Task<bool> UpdateAsync(uint id, Person? person, CancellationToken ct)
+        public async Task<bool> UpdateAsync(uint id, Person? person, CancellationToken ct)
         {
-            var existingPerson = _peopleList.FirstOrDefault(p => p.Id == id);
-
+            var existingPerson = await _context.Set<Person>().FindAsync(new { id }, ct);
             if (existingPerson != null)
             {
-                foreach (var property in typeof(Person).GetProperties())
+                try
                 {
-                    var newValue = property.GetValue(person);
-                    property.SetValue(existingPerson, newValue);
+                    foreach (var property in typeof(Person).GetProperties())
+                    {
+                        var newValue = property.GetValue(person);
+                        property.SetValue(existingPerson, newValue);
+                    }
+                    await _context.SaveChangesAsync(ct);
+                    return true;
                 }
-                return Task.FromResult(true);
+                catch (Exception)
+                {
+                    if (Debugger.IsAttached) throw;
+                    return false;
+                }
             }
-            else return Task.FromResult(false);
+            else return false;
         }
     }
 }
