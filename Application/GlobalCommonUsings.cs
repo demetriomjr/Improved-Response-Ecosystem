@@ -1,0 +1,1 @@
+﻿global using CToken = System.Threading.CancellationToken;

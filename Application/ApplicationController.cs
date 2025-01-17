@@ -1,11 +1,11 @@
-﻿using Application.API;
-using Application.Infrastructure;
+﻿using Application.Infrastructure;
+using Application.WebApiServices;
 
 namespace Application
 {
     public static class ApplicationController
     {
-        public static ApiController ApiController = new();
+        public static WebApiServicesController WebApiServices = new();
         public static InfrastructureController Infrastructure = new();
     }
 }

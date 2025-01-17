@@ -1,13 +1,11 @@
-﻿using CToken = System.Threading.CancellationToken;
-
-namespace Application.Interfaces
+﻿namespace Application.Interfaces
 {
-    public interface IWebApiContext<T> where T : class
+    public interface IWebAPIContext<T>
     {
-        public Task<List<T>> GetAsync(Func<T, bool> predicate, CToken ct);
-        public Task<T?> GetAsync(uint id, CToken ct);
-        public Task<T?> Post(T? item, CToken ct);
-        public Task<bool> Put(uint id, T? item, CToken ct);
-        public Task<bool> Delete(uint id, CToken ct);
+        Task<List<T>> Get(Func<T, bool> predicate, CToken ct);
+        Task<T?> Get(uint id, CToken ct);
+        Task<T?> Post(T? item, CToken ct);
+        Task<bool> Put(uint id, T? item, CToken ct);
+        Task<bool> Delete(uint id, CToken ct);
     }
 }

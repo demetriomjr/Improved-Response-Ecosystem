@@ -1,6 +1,5 @@
-﻿using Application.API.Repositories;
-using Application.Infrastructure.Repositories;
-using Application.Interfaces;
+﻿using Application.Interfaces;
+using Application.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -9,8 +8,8 @@ namespace Application
     {
         public static IServiceCollection AddInternalRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IDependencyRepository, ApiPersonRepository>();
-            services.AddScoped<IDependencyRepository, InfraPersonRepository>();
+            services.AddScoped<IPersonRepository, ApiPersonRepository>();
+            services.AddScoped<IPersonRepository, QueryRepository>();
 
             return services;
         }
