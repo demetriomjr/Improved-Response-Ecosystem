@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Models.People;
 
 namespace Application
 {
@@ -8,8 +9,8 @@ namespace Application
     {
         public static IServiceCollection AddInternalRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IPersonRepository, ApiPersonRepository>();
-            services.AddScoped<IPersonRepository, QueryRepository>();
+            services.AddKeyedScoped<IRepository<Person>, CommandRepository<Person>>("peopleQuery");
+            services.AddKeyedScoped<IRepository<Person>, QueryRepository<Person>>("peopleCommand");
 
             return services;
         }

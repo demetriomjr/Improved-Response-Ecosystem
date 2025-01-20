@@ -15,22 +15,46 @@ namespace Application.Repositories
 
         public async Task<List<T>> GetAllAsync(Func<T, bool> predicate, CToken ct)
         {
-            var result = await Task.Run( () => _context.Set<T>().Where(predicate).ToList(), ct);
-            return result;
+            try
+            {
+                var result = await Task.Run(() => _context.Set<T>().Where(predicate).ToList(), ct);
+                return result;
+            }
+            catch 
+            {
+                if (Debugger.IsAttached) throw;
+                return [];
+            }
         }
         public async Task<T?> GetByIdAsync(uint id, CToken ct)
         {
-            var result = await Task.Run(() => _context.Set<T>().Find(id), ct);
-            return result;
+            try
+            {
+                var result = await Task.Run(() => _context.Set<T>().Find(id), ct);
+                return result;
+            }
+            catch (Exception)
+            {
+                if (Debugger.IsAttached) throw;
+                return null!;
+            }
         }
 
         public async Task<T> CreateAsync(T item, CToken ct)
         {
-            var result = await Task.Run(() => _context.Set<T>().Add(item), ct);
-            var success = await _context.SaveChangesAsync(ct);
+            try
+            {
+                var result = await Task.Run(() => _context.Set<T>().Add(item), ct);
+                var success = await _context.SaveChangesAsync(ct);
 
-            if(success == 0) return null!;
-            else return result.Entity;
+                if (success == 0) return null!;
+                else return result.Entity;
+            }
+            catch 
+            {
+                if(Debugger.IsAttached) throw;
+                return null!;
+            }
         }
         
         public async Task<bool> UpdateAsync(T item, CToken ct)

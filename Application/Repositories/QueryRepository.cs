@@ -15,29 +15,53 @@ namespace Application.Repositories
 
         public async Task<List<T>> GetAllAsync(Func<T, bool> predicate, CToken ct)
         {
-            var collection = await _context.GetCollectionAsync<T>();
-            var result = collection.AsQueryable().Where(predicate).ToList();
-            return result;
+            try
+            {
+                var collection = await _context.GetCollectionAsync<T>();
+                var result = collection.AsQueryable().Where(predicate).ToList();
+                return result;
+            }
+            catch (Exception)
+            {
+                if (Debugger.IsAttached) throw;
+                return [];
+            }
         }
 
         public async Task<T?> GetByIdAsync(uint id, CToken ct)
         {
-            var collection = await _context.GetCollectionAsync<T>();
-            var filter = Builders<T>.Filter.Eq("Id", id);
-            var result = await collection.Find(filter).FirstOrDefaultAsync(ct);
-            return result;
+            try
+            {
+                var collection = await _context.GetCollectionAsync<T>();
+                var filter = Builders<T>.Filter.Eq("Id", id);
+                var result = await collection.Find(filter).FirstOrDefaultAsync(ct);
+                return result;
+            }
+            catch (Exception)
+            {
+                if (Debugger.IsAttached) throw;
+                return null;
+            }
         }
 
         public async Task<T> CreateAsync(T entity, CToken ct)
         {
-            var collection = await _context.GetCollectionAsync<T>();
-            await collection.InsertOneAsync(entity, null, ct);
-            return entity;
+            try
+            {
+                var collection = await _context.GetCollectionAsync<T>();
+                await collection.InsertOneAsync(entity, null, ct);
+                return entity;
+            }
+            catch (Exception)
+            {
+                if(Debugger.IsAttached) throw;
+                return null!;
+            }
         }
 
         public async Task<bool> UpdateAsync(List<T> list, CToken ct)
         {
-            var client = _context.GetClient();
+            using var client = _context.GetClient();
             using (var session = await client.StartSessionAsync(null, ct))
             {
                 session.StartTransaction();
@@ -83,10 +107,18 @@ namespace Application.Repositories
 
         public async Task<bool> DeleteAsync(uint id, CToken ct)
         {
-            var collection = await _context.GetCollectionAsync<T>();
-            var filter = Builders<T>.Filter.Eq("Id", id);
-            var result = await collection.DeleteOneAsync(filter, ct);
-            return result.DeletedCount > 0;
+            try
+            {
+                var collection = await _context.GetCollectionAsync<T>();
+                var filter = Builders<T>.Filter.Eq("Id", id);
+                var result = await collection.DeleteOneAsync(filter, ct);
+                return result.DeletedCount > 0;
+            }
+            catch
+            {
+                if (Debugger.IsAttached) throw;
+                return false;
+            }
         }
     }
 }

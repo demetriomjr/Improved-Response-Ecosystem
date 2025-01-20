@@ -22,29 +22,24 @@ namespace Application.Infrastructure
             return await _personRepository.GetByIdAsync(id, ct);
         }
 
-        public async Task<Person?> Post(Person? item, CToken ct)
+        public async Task<Person> Post(Person item, CToken ct)
         {
-            if (item is null) return null;
-
             if (item.Id > 0)
             {
-                await _personRepository.UpdateAsync(item.Id, item, ct);
+                await _personRepository.UpdateAsync(item, ct);
                 return item;
             }
 
             return await _personRepository.CreateAsync(item, ct);
         }
-        public async Task<bool> Put(uint id, Person? item, CToken ct)
-        {
-            if (item is null) return false;
-            if (id == 0) id = item.Id;
-
-            switch (id)
+        public async Task<bool> Put(Person item, CToken ct)
+       {
+            switch (item.CreatedAt)
             {
-                case 0:
+                case null:
                     return await _personRepository.CreateAsync(item, ct) != null;
                 default:
-                    return await _personRepository.UpdateAsync(id, item, ct);
+                    return await _personRepository.UpdateAsync(item, ct);
             }
         }
 

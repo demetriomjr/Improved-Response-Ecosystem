@@ -2,5 +2,6 @@
 {
     public class WebApiServicesController
     {
+        public PeopleController People = new();
     }
 }
